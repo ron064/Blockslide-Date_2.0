@@ -4,17 +4,18 @@
   "longName": "Blockslide Date 2.0",
   "companyName": "Jnm",
   "versionCode": 2,
-  "versionLabel": "2.2.0",
+  "versionLabel": "2.2.2",
   "watchapp": {
     "watchface": true
   },
   "capabilities": [ "configurable" ],
   "appKeys": {
-    "dateorder":	10,
-    "weekday":		11,
-    "lang":			12,
-    "stripes":		13,
-    "corners":		14
+    "dateorder":    10,
+    "weekday":      11,
+    "lang":         12,
+    "stripes":      13,
+    "roundcorners": 14,
+    "fulldigits":   15
   },
   "resources": {
     "media": [

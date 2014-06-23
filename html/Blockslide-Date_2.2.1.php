@@ -56,10 +56,8 @@
 		</div>
 
         <div data-role="fieldcontain">
-            <label for="weekday">
-                Show day of week
-            </label>
-            <select name="weekday" id="weekday" data-theme="" data-role="slider" data-mini="true">
+          <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <legend>Show day of week</legend>
 <?php
 	if (!isset($_GET['weekday'])) {
 		$weekday = 0;
@@ -68,70 +66,24 @@
 	}
 	
 	if ($weekday == 0) {
-		$s1 = " selected";
+		$s1 = " checked";
 		$s2 = "";
 	} else {
 		$s1 = "";
-		$s2 = " selected";
+		$s2 = " checked";
 	}
-	echo '<option value="0"' . $s1 .'>Off</option><option value="1"' . $s2 . '>On</option>';
+
+	echo '<input id="weekday1" name="weekday" value="0" data-theme="" type="radio"' . $s1 . '><label for="weekday1">On</label>';
+	echo '<input id="weekday2" name="weekday" value="1" data-theme="" type="radio"' . $s2 . '><label for="weekday2">Off</label>';
 ?>
-            </select>
+        </fieldset>
         </div>
 
-        <div data-role="fieldcontain">
-            <label for="stripes">
-                Striped Digits
-            </label>
-            <select name="stripes" id="stripes" data-theme="" data-role="slider" data-mini="true">
-<?php
-	if (!isset($_GET['stripes'])) {
-		$stripes = 1;
-	} else {
-		$stripes = $_GET['stripes'];
-	}
-	
-	if ($stripes == 0) {
-		$s1 = " selected";
-		$s2 = "";
-	} else {
-		$s1 = "";
-		$s2 = " selected";
-	}
-	echo '<option value="0"' . $s1 .'>Off</option><option value="1"' . $s2 . '>On</option>';
-?>
-            </select>
-        </div>
-
-        <div data-role="fieldcontain">
-            <label for="corners">
-                Round Digit Corners
-            </label>
-            <select name="corners" id="corners" data-theme="" data-role="slider" data-mini="true">
-<?php
-	if (!isset($_GET['corners'])) {
-		$corners = 1;
-	} else {
-		$corners = $_GET['corners'];
-	}
-	
-	if ($corners == 0) {
-		$s1 = " selected";
-		$s2 = "";
-	} else {
-		$s1 = "";
-		$s2 = " selected";
-	}
-	echo '<option value="0"' . $s1 .'>Off</option><option value="1"' . $s2 . '>On</option>';
-?>
-            </select>
-        </div>
-		
 		<div data-role="fieldcontain">
 			<label for="lang">
 				Language
 			</label>
-			<select id="lang" data-native-menu="true" name="lang" data-mini="true">
+			<select id="lang" data-native-menu="true" name="lang">
 <?php
 	$langs = array(
 		0 => 'Dutch',
@@ -160,17 +112,78 @@
 			</select>
 		</div>
 
-	</div>
-</div>
+      <div id="stripes" data-role="fieldcontain">
+        <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Stripes</legend>
+
+<?php
+	if (!isset($_GET['stripes'])) {
+		$stripes = 1;
+	} else {
+		$stripes = $_GET['stripes'];
+	}
+
+	$s = array( "", "");
+	$s[$stripes] = " checked";
+
+	echo '<input id="stripes1" name="stripes" value="0" data-theme="" type="radio"' . $s[0] . '><label for="stripes1"><img src="digitsPlain.png" width="72" height="72"><br/>Plain</label>';
+	echo '<input id="stripes2" name="stripes" value="1" data-theme="" type="radio"' . $s[1] . '><label for="stripes2"><img src="digits1.png" width="72" height="72"><br/>Striped</label>';
+?>
+        </fieldset>
+      </div>
+
+      <div id="roundcorners" data-role="fieldcontain">
+        <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Corners</legend>
+
+<?php
+	if (!isset($_GET['roundcorners'])) {
+		$roundcorners = 1;
+	} else {
+		$roundcorners = $_GET['roundcorners'];
+	}
+
+	$s = array( "", "");
+	$s[$roundcorners] = " checked";
+
+	echo '<input id="corners1" name="roundcorners" value="0" data-theme="" type="radio"' . $s[0] . '><label for="corners1"><img src="digitsNoCorners.png" width="72" height="72"><br/>Flat</label>';
+	echo '<input id="corners2" name="roundcorners" value="1" data-theme="" type="radio"' . $s[1] . '><label for="corners2"><img src="digitsCorners.png" width="72" height="72"><br/>Round</label>';
+?>
+        </fieldset>
+      </div>
+
+
+      <div id="fulldigits" data-role="fieldcontain">
+        <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Digits Shape</legend>
+
+<?php
+	if (!isset($_GET['fulldigits'])) {
+		$fulldigits = 0;
+	} else {
+		$fulldigits = $_GET['fulldigits'];
+	}
+
+	$s = array( "", "");
+	$s[$fulldigits] = " checked";
+
+	echo '<input id="format1" name="fulldigits" value="0" data-theme="" type="radio"' . $s[0] . '><label for="format1"><img src="digits1.png" width="72" height="72"><br/>Original</label>';
+	echo '<input id="format2" name="fulldigits" value="1" data-theme="" type="radio"' . $s[1] . '><label for="format2"><img src="digits2.png" width="72" height="72"><br/>Regular</label>';
+?>
+        </fieldset>
+      </div>
+  </div>
+
 
     <script>
       function saveOptions() {
         var options = {
           'dateorder': parseInt($("input[name=dateorder]:checked").val(), 10),
-			'weekday': parseInt($("#weekday").val(), 10),
-			'lang': parseInt($("#lang").val(), 10),
-			'stripes': parseInt($("#stripes").val(), 10),
-			'corners': parseInt($("#corners").val(), 10)
+          'weekday': parseInt($("input[name=weekday]:checked").val(), 10),
+          'lang': parseInt($("#lang").val(), 10),
+          'stripes': parseInt($("input[name=stripes]:checked").val(), 10),
+          'roundcorners': parseInt($("input[name=roundcorners]:checked").val(), 10),
+          'fulldigits': parseInt($("input[name=fulldigits]:checked").val(), 10)
         }
         return options;
       }
