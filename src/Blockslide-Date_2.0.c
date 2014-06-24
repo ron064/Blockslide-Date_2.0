@@ -1,6 +1,7 @@
 #include <pebble.h>
 
 #include "Blockslide-Date_2.0.h"
+#include "pposdemo.h"
 
 /*
  * 2014.06.18: Round Corners option implementation thanks to Ron64
@@ -150,7 +151,7 @@ void updateSlot(Layer *layer, GContext *ctx) {
   static unsigned int animMiddle = ANIMATION_NORMALIZED_MAX / 2;
 
   slot = findSlot(layer);
-  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_context_set_fill_color(ctx, backColor);
   bounds = layer_get_bounds(slot->layer);
   graphics_fill_rect(ctx, GRect(0, 0, bounds.size.w, bounds.size.h), 0, GCornerNone);
 
@@ -211,7 +212,7 @@ void updateSlot(Layer *layer, GContext *ctx) {
       }
     }
 
-    graphics_context_set_fill_color(ctx, GColorWhite);
+    graphics_context_set_fill_color(ctx, foreColor);
     graphics_fill_rect(ctx, GRect(ox, oy, slot->tileWidth, slot->tileHeight-stripedDigits), cornerRadius, cornerMask);
   }
 }
@@ -452,7 +453,7 @@ void applyConfig() {
   }
 }
 
-bool checkAndSaveInt(int *var, int val, int key) {
+/*bool checkAndSaveInt(int *var, int val, int key) {
   int ret;
 
   if (*var != val) {
@@ -466,7 +467,7 @@ bool checkAndSaveInt(int *var, int val, int key) {
   } else {
     return false;
   }
-}
+}*/
 static inline int8_t getDigitTile(int8_t *digit, int x, int y) {
   if ( (x < 0) || (x > 2) || (y < 0) || (y > 4)) {
     return 0;
@@ -565,7 +566,7 @@ void swapDigitShapes() {
   calcDigitCorners(4);
   calcDigitCorners(5);
 }
-
+/*
 void in_dropped_handler(AppMessageResult reason, void *context) {
 }
 
@@ -661,7 +662,7 @@ static void app_message_init(void) {
   app_message_register_inbox_received(in_received_handler);
   app_message_register_inbox_dropped(in_dropped_handler);
   app_message_open(128, 128);
-}
+}*/
 
 void initDigitCorners() {
   int i;
@@ -671,19 +672,30 @@ void initDigitCorners() {
   }
 }
 
-void handle_init() {
-  Layer *rootLayer;
+void redraw_block() {
+	redrawAllSlots();
+}
+
+void load_block() {
+  //Layer *rootLayer;
   int i;
 
-  window = window_create();
-  window_set_background_color(window, GColorBlack);
-  window_stack_push(window, true);
+  //window = window_create();
+  //window_set_background_color(window, backColor);
+  //window_stack_push(window, true);
 
-  readConfig();
+  //readConfig();
+  curLang = AllSet[SET_LANG];
+  showWeekday = AllSet[SET_BLK_DAY];
+  USDate = AllSet[SET_DATE];
+  stripedDigits = AllSet[SET_BLOCK_LINE];
+  roundCorners = AllSet[SET_BLK_RND];
+  fullDigits = AllSet[SET_FULL_DIG];
+	
   swapDigitShapes();
-  app_message_init();
+  //app_message_init();
 
-  rootLayer = window_get_root_layer(window);
+  //rootLayer = window_get_root_layer(window);//
 
   for (i=0; i<NUMSLOTS; i++) {
     initSlot(i, rootLayer);
@@ -710,7 +722,7 @@ void handle_init() {
   bluetooth_connection_service_subscribe(handle_bluetooth);
 }
 
-void handle_deinit() {
+void unload_block() {
   int i;
   if (timer != NULL) {
     app_timer_cancel(timer);
@@ -726,11 +738,20 @@ void handle_deinit() {
     deinitSlot(i);
   }
   
-  window_destroy(window);
+  //window_destroy(window);
 }
 
-int main(void) {
-  handle_init();
-  app_event_loop();
-  handle_deinit();
+//removed main
+
+void info_block(void* disp_info)
+{
+	char Defaults[6][3]={{SET_DATE,1,0}, {SET_LANG,LANG_ENGLISH,LANG_ENGLISH}, {SET_BLOCK_LINE,1,0}, 
+                          {SET_BLK_DAY,0,1}, {SET_BLK_RND,1,0}, {SET_FULL_DIG,0,1}};
+		
+	display_info * info = (display_info *) disp_info;
+	snprintf(info->app_name, sizeof(info->app_name),"Block Slide");
+	snprintf(info->dev_name, sizeof(info->dev_name),"Jnm");	
+	memcpy(info->def_set, &Defaults, 6*3 );
+	info->def_cnt= 6; //six setting items
+	info->def_opt= 6; //all six have alternative value
 }
