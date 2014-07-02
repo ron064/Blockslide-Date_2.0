@@ -1,9 +1,10 @@
-# modified BlockSlide - Example of adjusting a project to Pebble PoS demo infrastructure #
-By Ron64
+# modified BlockSlide #
+#### Example of adjusting a project to Pebble PoS demo infrastructure ####
+#### by Ron64 ####
 This branch of BlockSlide(By Jnm) was created to demonstrate how to convert source code, in order to submit it to the Pebble POS overlay demo project (By Ron64 & Gregoire Sage)
 If your project have resources or uses GPath with drawing routine, there are additional steps (we will update the PebbleOne example for it.)
 
-##Main steps##:
+##Main steps##
 
 * Add pposdemo.h (add SET_xxx for your settings)
 * modify your code (entry points, colors, settings, disable messages, etc)
@@ -40,7 +41,7 @@ Every display should include this data to give proper credit, and preferred defa
 * Def_set lists the values for each setting parameter. the index in AllSet, a default value, and an optional value if needed. this can allow to display the watch-face as developer intended, and in an optional configuration as well.
 * def_cnt mark how many setting exist in def_set array. if def_opt is zero, the additional optional setting will be ignored.
 
-### using demo_main for testing ###
+### Using demo_main for testing ###
 
 * Add your app short name xxx into ENTRYPOINTS(xxx) and ENTRYPOINTROW(xxx), in demomain.c (In here xxx=block)
 * let it run your modified code to make sure it works, and that it is displayed correctly.
