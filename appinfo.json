@@ -20,6 +20,11 @@
   "resources": {
     "media": [
       {
+        "type": "raw"
+        "name": "BIN_BLOCK_DIG",
+        "file": "data/Block_Digits.bin",
+      },
+      {
         "menuIcon": true,
         "type": "png",
         "name": "IMAGE_MENU_ICON",

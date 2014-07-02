@@ -8,11 +8,13 @@ enum {SET_INV, SET_DATE, SET_LANG, SET_BAT, SET_COMM, SET_BUZZ_DIS, SET_BUZZ_CON
       SET_TIME, SET_BLK_DAY, SET_BLK_RND, SET_FULL_DIG, SET_028, SET_029, SET_030, SET_031,  // More faces.
 	  SET_032, SET_033, SET_034, SET_035, SET_036, SET_037, SET_038, SET_039,
 	  SET_040, SET_041, SET_043, SET_044, SET_045, SET_046, SET_047};
-#define SETSIZE 48
+#define SETSIZE 64
 extern int8_t AllSet[SETSIZE]; //settings for all. use 0 as default value
 extern GColor backColor;
 extern GColor foreColor;
 extern Layer *rootLayer;
+extern int resourceOffset; //Starting point for resources, updated before calling compiled display
+extern int setOffset; //Starting point within AllSet array, updated before calling compiled display
 void configRedraw();
 
 typedef struct  {

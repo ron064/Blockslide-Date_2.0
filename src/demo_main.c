@@ -11,6 +11,7 @@ typedef struct {
 int8_t AllSet[SETSIZE];
 display_info disp_info;
 app_t current_app;
+int resourceOffset = 0;
 
 GColor backColor = GColorBlack;						
 GColor foreColor = GColorWhite;

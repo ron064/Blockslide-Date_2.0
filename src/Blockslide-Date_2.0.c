@@ -55,12 +55,12 @@ char weekDay[LANG_MAX][7][3] = {
   { "DO", "LU", "MA", "ME", "GI", "VE", "SA" }  // Italian
 };
 
-int curLang = LANG_ENGLISH;
-int showWeekday = 0;
-int USDate = 1;
-int stripedDigits = 1;
-int roundCorners = 1;
-int fullDigits = 0;
+uint8_t curLang = LANG_ENGLISH;
+uint8_t showWeekday = 0;
+uint8_t USDate = 1;
+uint8_t stripedDigits = 1;
+uint8_t roundCorners = 1;
+uint8_t fullDigits = 0;
 bool digitShapesChanged = false;
 
 
@@ -679,18 +679,27 @@ void redraw_block() {
 void load_block() {
   //Layer *rootLayer;
   int i;
+  digits= malloc(NUM_DIGITS*13*2);
+  digitCorners = malloc(NUM_DIGITS*13);
+  resource_load(resource_get_handle(RESOURCE_ID_BIN_BLOCK_DIG), (uint8_t *)digits, NUM_DIGITS*13*2);
 
   //window = window_create();
   //window_set_background_color(window, backColor);
   //window_stack_push(window, true);
 
   //readConfig();
-  curLang = AllSet[SET_LANG];
-  showWeekday = AllSet[SET_BLK_DAY];
-  USDate = AllSet[SET_DATE];
-  stripedDigits = AllSet[SET_BLOCK_LINE];
+  if (AllSet[SET_LANG]<LANG_MAX)
+    curLang = AllSet[SET_LANG];
+  if (AllSet[SET_BLK_DAY]<=1)
+    showWeekday = AllSet[SET_BLK_DAY];
+  if (AllSet[SET_DATE]<=1)
+    USDate = AllSet[SET_DATE];
+  if (AllSet[SET_BLOCK_LINE]<=1)
+    stripedDigits = AllSet[SET_BLOCK_LINE];
+  if (AllSet[SET_BLK_RND]<=1)
   roundCorners = AllSet[SET_BLK_RND];
-  fullDigits = AllSet[SET_FULL_DIG];
+  if (AllSet[SET_FULL_DIG]<=1)
+    fullDigits = AllSet[SET_FULL_DIG];
 	
   swapDigitShapes();
   //app_message_init();
@@ -733,7 +742,8 @@ void unload_block() {
   accel_tap_service_unsubscribe();
   tick_timer_service_unsubscribe();
   animation_destroy(anim);
-  
+  free(digitCorners);
+  free(digits);
   for (i=0; i<NUMSLOTS; i++) {
     deinitSlot(i);
   }
